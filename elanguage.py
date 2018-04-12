@@ -1,7 +1,8 @@
 import requests
 from lxml import etree
-import traceback,os,socket
+import traceback,os,socke
 
+#获取链接函数
 def getpage(url):
     try:
         r = requests.get(url)
@@ -13,7 +14,7 @@ def getpage(url):
 
 
 def parseHtml():
-
+    #设置超时时间为5s
     socket.setdefaulttimeout(5)
     source_url = 'http://www.5a5x.com/wode_source/'
     r = getpage(source_url)
@@ -35,7 +36,7 @@ def parseHtml():
             page_text=getpage(page_url)
             page_html = etree.HTML(page_text)
             alist = page_html.xpath('//*[@id="main_l"]/dl/dt/a/@href')
-
+            #获取源码链接
             for hrefs in alist:
                 download_url=''
                 try:
@@ -49,6 +50,7 @@ def parseHtml():
                     file_url = 'http://www.5a5x.com/' + downhtml.xpath('//a/@href')[0]
                     r= requests.get(file_url)
                     r.encoding=r.apparent_encoding
+                    #将下载文件存储到指定类型的文件夹，并以zip形式存储
                     with open('F:\\python_workplace\\Elanguage\\'+ type +'\\'+ code_title + ".zip", 'wb') as f:
                         f.write(r.content)
                     print(type+ ','+ code_title)
